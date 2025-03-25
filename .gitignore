@@ -1,0 +1,15 @@
+*.pyc
+*.iml
+*.swp
+.project
+.pydevproject
+.DS_Store
+.idea
+
+.vscode/*
+!.vscode/extensions.json
+
+# colcon/CMake output
+build/
+install/
+log/
