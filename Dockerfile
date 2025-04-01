@@ -75,6 +75,15 @@ RUN apt-get clean -y && \
 	rm -rf /var/lib/apt/lists/*
 
 #-------------------------------------------------------------------------------
+# VS Code
+
+# Copy workspace configuration
+COPY scripts/ros2.code-workspace /ros2.code-workspace
+
+# Replace ROS distro in workspace configuration
+RUN sed -i 's/@@ROS_DISTRO@@/'"$ROS_DISTRO"'/g' /ros2.code-workspace
+
+#-------------------------------------------------------------------------------
 # Entrypoint
 
 # Alias python3 to python
