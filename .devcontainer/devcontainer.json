@@ -12,7 +12,7 @@
         }
     },
     "workspaceMount": "source=${localWorkspaceFolder}/workspaces,target=/workspaces,type=bind,consistency=cached",
-    "workspaceFolder": "/workspaces",
+    "workspaceFolder": "/config/workspaces",
     "runArgs": [
         "--rm",
         "-it"

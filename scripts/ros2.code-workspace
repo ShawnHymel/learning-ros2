@@ -1,8 +1,8 @@
 {
     "folders": [
         {
-            "name": "/workspaces",
-            "path": "/workspaces"
+            "name": "/config/workspaces",
+            "path": "/config/workspaces"
         },
         {
             "name": "/opt/ros/@@ROS_DISTRO@@",
@@ -12,15 +12,17 @@
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash",
         "workbench.colorTheme": "Visual Studio Dark - C++",
+        "ros.distro": "jazzy",
         "files.associations": {
+            "*.ipp": "cpp"
         }
     },
     "extensions": {
         "recommendations": [
+            "ms-iot.vscode-ros",
             "ms-python.python",
-            "ms-vscode.cpptools",
-            "ms-vscode.cmake-tools",
-            "ms-iot.vscode-ros"
+            "ms-vscode.hexeditor",
+            "ms-vscode.cpptools-extension-pack"
         ]
     }
 }

@@ -12,6 +12,7 @@ ARG VS_CODE_EXT_PYTHON_VERSION=2025.5.2025040401
 ARG VS_CODE_EXT_CPPTOOLS_VERSION=1.24.5
 ARG VS_CODE_EXT_HEX_EDITOR_VERSION=1.11.1
 ARG VS_CODE_EXT_CMAKETOOLS_VERSION=1.21.9
+ARG VS_CODE_EXT_CPP_EXT_PACK_VERSION=1.3.1
 
 #-------------------------------------------------------------------------------
 # Base image and dependencies
@@ -30,6 +31,7 @@ ARG VS_CODE_EXT_PYTHON_VERSION
 ARG VS_CODE_EXT_CPPTOOLS_VERSION
 ARG VS_CODE_EXT_HEX_EDITOR_VERSION
 ARG VS_CODE_EXT_CMAKETOOLS_VERSION
+ARG VS_CODE_EXT_CPP_EXT_PACK_VERSION
 
 # Set default shell during Docker image build to bash
 SHELL ["/bin/bash", "-c"]
@@ -47,6 +49,7 @@ RUN apt-get -y update && \
     apt-get -y install \
         curl \
         locales \
+        nano \
         openssh-server \
         python3 \
         python3-pip \
@@ -96,6 +99,9 @@ RUN apt-get clean -y && \
 	apt-get autoremove --purge -y && \
 	rm -rf /var/lib/apt/lists/*
 
+# Change permissions for ROS 2 source directory
+RUN chmod -R 0777 /opt/ros/${ROS_DISTRO}
+
 #-------------------------------------------------------------------------------
 # VS Code
 
@@ -120,18 +126,16 @@ RUN mkdir -p /tmp/vscode-extensions && \
     cd /tmp/vscode-extensions && \
     wget --compression=gzip ${WGET_ARGS} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-iot/vsextensions/vscode-ros/${VS_CODE_EXT_ROS_VERSION}/vspackage -O ros.vsix && \
     wget --compression=gzip ${WGET_ARGS} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/python/${VS_CODE_EXT_PYTHON_VERSION}/vspackage -O python.vsix && \
-    wget --compression=gzip ${WGET_ARGS} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools/${VS_CODE_EXT_CPPTOOLS_VERSION}/vspackage -O cpptools.vsix && \
     wget --compression=gzip ${WGET_ARGS} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/hexeditor/${VS_CODE_EXT_HEX_EDITOR_VERSION}/vspackage -O hexeditor.vsix && \
-    wget --compression=gzip ${WGET_ARGS} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cmake-tools/${VS_CODE_EXT_CMAKETOOLS_VERSION}/vspackage -O cmake-tools.vsix
+    wget --compression=gzip ${WGET_ARGS} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cpptools-extension-pack/${VS_CODE_EXT_CPP_EXT_PACK_VERSION}/vspackage -O cppextpack.vsix
     
 
 # Install VS Code extensions
 RUN cd /tmp/vscode-extensions && \
     code --install-extension ros.vsix --force --user-data-dir /root/.vscode-root --no-sandbox && \
     code --install-extension python.vsix --force --user-data-dir /root/.vscode-root --no-sandbox && \
-    code --install-extension cpptools.vsix --force --user-data-dir /root/.vscode-root --no-sandbox && \
     code --install-extension hexeditor.vsix --force --user-data-dir /root/.vscode-root --no-sandbox && \
-    code --install-extension cmake-tools.vsix --force --user-data-dir /root/.vscode-root --no-sandbox
+    code --install-extension cppextpack.vsix --force --user-data-dir /root/.vscode-root --no-sandbox
 
 # Clean up VS Code extensions
 RUN rm -rf /tmp/vscode-extensions
@@ -141,6 +145,9 @@ COPY scripts/ros2.code-workspace /ros2.code-workspace
 
 # Replace ROS distro in workspace configuration
 RUN sed -i 's/@@ROS_DISTRO@@/'"$ROS_DISTRO"'/g' /ros2.code-workspace
+
+# Change permissions for .vscode directory
+RUN chmod -R 0777 /config/.vscode
 
 #-------------------------------------------------------------------------------
 # Entrypoint

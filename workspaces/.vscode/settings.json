@@ -1,7 +1,13 @@
 {
-    "cmake.sourceDirectory": "/workspaces/ros2_ws/src/my_cpp_pkg",
+    "cmake.sourceDirectory": "/config/workspaces/ros2_ws/src/my_cpp_pkg",
     "editor.hover.enabled": true,
     "C_Cpp.intelliSenseEngine": "Default",
     "C_Cpp.autocomplete": "Default",
-    "ros.distro": "jazzy"
+    "ros.distro": "jazzy",
+    "cmake.ignoreCMakeListsMissing": true,
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "terminal.integrated.shellArgs.linux": [
+        "-c",
+        "source /opt/ros/jazzy/setup.bash && exec bash"
+    ]
 }

@@ -3,14 +3,21 @@
         {
             "name": "ROS2",
             "includePath": [
-                "/workspaces/**",
+                "/config/workspaces/**",
                 "/opt/ros/jazzy/**"
             ],
-            "defines": [
-            ],
-             "cppStandard": "c++14",
+            "defines": [],
+            "browse": {
+                "path": [
+                    "/config/workspaces/**",
+                    "/opt/ros/jazzy/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": "/config/.vscode/vc.db"
+            },
+            "cppStandard": "c++14",
             "compilerPath": "/usr/bin/g++",
-            "intelliSenseMode": "${default}"
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4
