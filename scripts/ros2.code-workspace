@@ -5,12 +5,32 @@
             "path": "/config/workspaces"
         },
         {
-            "name": "/opt/ros/@@ROS_DISTRO@@",
-            "path": "/opt/ros/@@ROS_DISTRO@@"
+            "name": "/opt/ros/jazzy",
+            "path": "/opt/ros/jazzy"
         },
     ],
     "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+            "bash": {
+                "path": "/bin/bash",
+                "args": ["-c", "source /opt/ros/jazzy/setup.bash && exec bash"]
+            }
+        },
+        "terminal.integrated.env.linux": {
+            "PYTHONPATH": "/opt/ros/jazzy/lib/python3.12/site-packages:$PYTHONPATH"
+        },
+        "python.analysis.extraPaths": [
+            "/opt/ros/jazzy/lib/python3.12/site-packages"
+        ],
+        "cmake.environment": {
+            "CMAKE_PREFIX_PATH": "/opt/ros/jazzy",
+            "ament_cmake_DIR": "/opt/ros/jazzy/share/ament_cmake/cmake"
+        },
+        "cmake.configureEnvironment": {
+            "CMAKE_PREFIX_PATH": "/opt/ros/jazzy",
+            "ament_cmake_DIR": "/opt/ros/jazzy/share/ament_cmake/cmake"
+        },
         "workbench.colorTheme": "Visual Studio Dark - C++",
         "ros.distro": "jazzy",
         "files.associations": {

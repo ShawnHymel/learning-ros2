@@ -9,5 +9,8 @@
     "terminal.integrated.shellArgs.linux": [
         "-c",
         "source /opt/ros/jazzy/setup.bash && exec bash"
+    ],
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
     ]
 }
