@@ -34,7 +34,11 @@
         "workbench.colorTheme": "Visual Studio Dark - C++",
         "ros.distro": "jazzy",
         "files.associations": {
-            "*.ipp": "cpp"
+            "*.ipp": "cpp",
+            "array": "cpp",
+            "string": "cpp",
+            "string_view": "cpp",
+            "span": "cpp"
         }
     },
     "extensions": {

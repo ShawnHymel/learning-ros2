@@ -146,8 +146,9 @@ COPY scripts/ros2.code-workspace /ros2.code-workspace
 # Replace ROS distro in workspace configuration
 RUN sed -i 's/@@ROS_DISTRO@@/'"$ROS_DISTRO"'/g' /ros2.code-workspace
 
-# Change permissions for .vscode directory
-RUN chmod -R 0777 /config/.vscode
+# Change permissions for .vscode directory and workspace configuration
+RUN chmod -R 0777 /config/.vscode && \
+    chmod 0777 /ros2.code-workspace
 
 #-------------------------------------------------------------------------------
 # Entrypoint

@@ -22,7 +22,8 @@ setup(
         'console_scripts': [
             "py_node = my_py_pkg.my_first_node:main",
             "robot_news_station = my_py_pkg.robot_news_station:main",
-            "smartphone = my_py_pkg.smartphone:main"
+            "smartphone = my_py_pkg.smartphone:main",
+            "num_pub = my_py_pkg.num_pub:main"
         ],
     },
 )
