@@ -4,6 +4,7 @@
     "C_Cpp.intelliSenseEngine": "Default",
     "C_Cpp.autocomplete": "Default",
     "ros.distro": "jazzy",
+    "ros.workspaceFolder": "/config/workspaces/ros2_ws",
     "cmake.ignoreCMakeListsMissing": true,
     "C_Cpp.default.compilerPath": "/usr/bin/g++",
     "terminal.integrated.shellArgs.linux": [

@@ -26,7 +26,8 @@ setup(
             "num_pub = my_py_pkg.num_pub:main",
             "add_two_ints_server = my_py_pkg.add_two_ints_server:main",
             "add_two_ints_client_no_oop = my_py_pkg.add_two_ints_client_no_oop:main",
-            "add_two_ints_client = my_py_pkg.add_two_ints_client:main"
+            "add_two_ints_client = my_py_pkg.add_two_ints_client:main",
+            "hw_status_publisher = my_py_pkg.hardware_status_publisher:main"
         ],
     },
 )

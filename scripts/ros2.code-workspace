@@ -1,8 +1,8 @@
 {
     "folders": [
         {
-            "name": "/config/workspaces",
-            "path": "/config/workspaces"
+            "name": "/config/workspaces/ros2_ws",
+            "path": "/config/workspaces/ros2_ws"
         },
         {
             "name": "/opt/ros/jazzy",
@@ -20,9 +20,6 @@
         "terminal.integrated.env.linux": {
             "PYTHONPATH": "/opt/ros/jazzy/lib/python3.12/site-packages:$PYTHONPATH"
         },
-        "python.analysis.extraPaths": [
-            "/opt/ros/jazzy/lib/python3.12/site-packages"
-        ],
         "cmake.environment": {
             "CMAKE_PREFIX_PATH": "/opt/ros/jazzy",
             "ament_cmake_DIR": "/opt/ros/jazzy/share/ament_cmake/cmake"
@@ -33,13 +30,21 @@
         },
         "workbench.colorTheme": "Visual Studio Dark - C++",
         "ros.distro": "jazzy",
+        "ros.workspaceFolder": "/config/workspaces/ros2_ws",
         "files.associations": {
             "*.ipp": "cpp",
             "array": "cpp",
             "string": "cpp",
             "string_view": "cpp",
             "span": "cpp"
-        }
+        },
+        "ros.rosSetupScript": "",
+        "python.analysis.extraPaths": [
+            "/opt/ros/jazzy/lib/python3.12/site-packages"
+        ],
+        "python.autoComplete.extraPaths": [
+            "/opt/ros/jazzy/lib/python3.12/site-packages"
+        ]
     },
     "extensions": {
         "recommendations": [

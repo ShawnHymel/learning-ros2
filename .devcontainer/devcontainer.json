@@ -15,7 +15,11 @@
     "workspaceFolder": "/config/workspaces",
     "runArgs": [
         "--rm",
-        "-it"
+        "-it",
+        "-e PUID=1000",
+        "-e PGID=1000",
+        "-p 22002:22",
+        "-p 3000:3000"
     ],
     "remoteUser": "root"
 }

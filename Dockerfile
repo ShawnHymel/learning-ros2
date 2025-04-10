@@ -102,6 +102,9 @@ RUN apt-get clean -y && \
 # Change permissions for ROS 2 source directory
 RUN chmod -R 0777 /opt/ros/${ROS_DISTRO}
 
+# Set environment variables for ROS 2
+ENV ROS_DISTRO=${ROS_DISTRO}
+
 #-------------------------------------------------------------------------------
 # VS Code
 
@@ -149,6 +152,16 @@ RUN sed -i 's/@@ROS_DISTRO@@/'"$ROS_DISTRO"'/g' /ros2.code-workspace
 # Change permissions for .vscode directory and workspace configuration
 RUN chmod -R 0777 /config/.vscode && \
     chmod 0777 /ros2.code-workspace
+
+# Change permissions for cache directory
+RUN mkdir -p /config/.cache && \
+    chown -R ${DEFAULT_USERNAME}:${DEFAULT_USERNAME} /config/.cache && \
+    chmod -R 0777 /config/.cache
+
+# Copy VS Code Desktop launcher
+COPY scripts/vscode-ros2.desktop /config/Desktop/vscode-ros2.desktop
+RUN chown ${DEFAULT_USERNAME}:${DEFAULT_USERNAME} /config/Desktop/vscode-ros2.desktop && \
+    chmod 0777 /config/Desktop/vscode-ros2.desktop
 
 #-------------------------------------------------------------------------------
 # Entrypoint
