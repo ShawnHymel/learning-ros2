@@ -6,9 +6,22 @@ from example_interfaces.msg import String
 class RobotNewsStationNode(Node):
     def __init__(self):
         super().__init__("robot_news_station")
-        self.robot_name_ = "C3PO"
+
+        # Set up parameters
+        self.declare_parameter("robot_name", rclpy.Parameter.Type.STRING)
+        self.declare_parameter("timer_period", 1.0)
+
+        # Set to attributes
+        self.robot_name_ = self.get_parameter("robot_name").value
+        self.timer_period_ = self.get_parameter("timer_period").value
+
+        # Create publisher
         self.publisher_ = self.create_publisher(String, "robot_news", 10)
-        self.timer_ = self.create_timer(0.5, self.publish_news)
+        
+        # Create periodic timer
+        self.timer_ = self.create_timer(self.timer_period_, self.publish_news)
+        
+        # Show the node setup is done
         self.get_logger().info("Robot News Station has been started.")
 
     def publish_news(self):

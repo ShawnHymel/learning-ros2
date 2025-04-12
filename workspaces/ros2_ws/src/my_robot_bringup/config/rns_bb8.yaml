@@ -1,0 +1,4 @@
+/robot_news_station_bb8:
+  ros__parameters:
+    robot_name: "BB8"
+    timer_period: 4.0

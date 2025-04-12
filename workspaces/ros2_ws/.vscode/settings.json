@@ -1,6 +1,12 @@
 {
     "cmake.ignoreCMakeListsMissing": true,
     "python.analysis.extraPaths": [
+        "/opt/ros/jazzy/lib/python3.12/site-packages",
+        "install/my_robot_interfaces/lib/python3.12/site-packages",
+        "install/my_py_pkg/lib/python3.12/site-packages"
+    ],
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/jazzy/lib/python3.12/site-packages",
         "install/my_robot_interfaces/lib/python3.12/site-packages",
         "install/my_py_pkg/lib/python3.12/site-packages"
     ]

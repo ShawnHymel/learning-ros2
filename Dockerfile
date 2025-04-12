@@ -144,7 +144,7 @@ RUN cd /tmp/vscode-extensions && \
 RUN rm -rf /tmp/vscode-extensions
 
 # Copy workspace configuration
-COPY scripts/ros2.code-workspace /ros2.code-workspace
+COPY .scripts/ros2.code-workspace /ros2.code-workspace
 
 # Replace ROS distro in workspace configuration
 RUN sed -i 's/@@ROS_DISTRO@@/'"$ROS_DISTRO"'/g' /ros2.code-workspace
@@ -158,8 +158,13 @@ RUN mkdir -p /config/.cache && \
     chown -R ${DEFAULT_USERNAME}:${DEFAULT_USERNAME} /config/.cache && \
     chmod -R 0777 /config/.cache
 
+#-------------------------------------------------------------------------------
+# Desktop customization
+
 # Copy VS Code Desktop launcher
-COPY scripts/vscode-ros2.desktop /config/Desktop/vscode-ros2.desktop
+RUN mkdir -p /config/.icons
+COPY .images/vscode-ros-icon_512px.png /config/.icons/vscode-ros-icon.png
+COPY .scripts/vscode-ros2.desktop /config/Desktop/vscode-ros2.desktop
 RUN chown ${DEFAULT_USERNAME}:${DEFAULT_USERNAME} /config/Desktop/vscode-ros2.desktop && \
     chmod 0777 /config/Desktop/vscode-ros2.desktop
 
@@ -167,7 +172,6 @@ RUN chown ${DEFAULT_USERNAME}:${DEFAULT_USERNAME} /config/Desktop/vscode-ros2.de
 # Entrypoint
 
 # Custom entrypoint
-COPY scripts/entrypoint.sh /entrypoint.sh
+COPY .scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-# ENTRYPOINT ["/init"]

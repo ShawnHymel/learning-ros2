@@ -1,0 +1,4 @@
+/robot_news_station_giskard:
+  ros__parameters:
+    robot_name: "Giskard"
+    timer_period: 8.0

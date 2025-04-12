@@ -1,0 +1,4 @@
+/robot_news_station_jander:
+  ros__parameters:
+    robot_name: "Jander"
+    timer_period: 5.0

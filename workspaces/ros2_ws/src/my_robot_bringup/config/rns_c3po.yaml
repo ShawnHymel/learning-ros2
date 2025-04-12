@@ -1,0 +1,4 @@
+/robot_news_station_c3po:
+  ros__parameters:
+    robot_name: "C3PO"
+    timer_period: 2.0

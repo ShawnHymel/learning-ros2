@@ -1,0 +1,4 @@
+/robot_news_station_daneel:
+  ros__parameters:
+    robot_name: "Daneel"
+    timer_period: 12.0
