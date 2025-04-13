@@ -8,6 +8,9 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from turtlesim.msg import Pose
 
+# Debug flag
+DEBUG = False
+
 class TurtleControl(Node):
     """Node for controlling the main turtle"""
 
@@ -17,18 +20,22 @@ class TurtleControl(Node):
         super().__init__(node_name, **kwargs)
 
         # Set up parameters
-        self.declare_parameter("timer_period", 0.5)
-        self.declare_parameter("default_linear_velocity", 1.0)
-        self.declare_parameter("linear_velocity_multiplier", 3.0)
-        self.declare_parameter("default_angular_velocity", 1.0)
-        self.declare_parameter("angular_velocity_multiplier", 10.0)
+        self.declare_parameter("timer_period", 0.2)
+        self.declare_parameter("lin_vel_default", 0.0)
+        self.declare_parameter("lin_vel_multiplier", 0.5)
+        self.declare_parameter("lin_vel_min", 0.2)
+        self.declare_parameter("lin_vel_max", 3.0)
+        self.declare_parameter("ang_vel_default", 0.0)
+        self.declare_parameter("ang_vel_multiplier", 2.0)
+        self.declare_parameter("ang_vel_min", -4.0)
+        self.declare_parameter("ang_vel_max", 4.0)
 
         # Assign parameters
         self._timer_period = self.get_parameter("timer_period").value
         self._player_lin_vel= \
-            self.get_parameter("default_linear_velocity").value
+            self.get_parameter("lin_vel_default").value
         self._player_ang_vel = \
-            self.get_parameter("default_angular_velocity").value
+            self.get_parameter("ang_vel_default").value
 
         # Initialize player position subscriber
         self._player_x = 0.0
@@ -73,44 +80,60 @@ class TurtleControl(Node):
         # If there are no turtles, just do some donuts
         if self._turtles == []:
             self._player_lin_vel = \
-                self.get_parameter("default_linear_velocity").value
+                self.get_parameter("lin_vel_default").value
             self._player_ang_vel = \
-                self.get_parameter("default_angular_velocity").value
+                self.get_parameter("ang_vel_default").value
             
         # Otherwise, angle the turtle toward the nearest spawn
         else:
 
-            # Figure out which way we need to turn using the cross product
-            dx = math.cos(self._player_theta)
-            dy = math.sin(self._player_theta)
+            # Position
             vx = self._closest_turtle["x"] - self._player_x
             vy = self._closest_turtle["y"] - self._player_y
-            cross = (dx * vy) - (dy * vx)
-            self.get_logger().info(f"cross={cross}")
-
-            # Get distance to target
             dist = math.sqrt(vx ** 2 + vy ** 2)
-            self.get_logger().info(f"dist={dist}")
-            self.get_logger().info("---")
+            self._player_lin_vel = 2 * dist
 
-            # Update turtle linear velocity
-            lin_vel = \
-                self.get_parameter("default_linear_velocity").value
-            lin_mult = self.get_parameter("linear_velocity_multiplier").value
-            if dist > 1.0:
-                self._player_lin_vel = lin_mult * lin_vel
-            else:
-                self._player_lin_vel = lin_vel
+            # Orientation
+            phi = math.atan2(vy, vx)
+            ang_diff = phi - self._player_theta
+            if ang_diff > math.pi:
+                ang_diff -= 2 * math.pi
+            elif ang_diff < -math.pi:
+                ang_diff += 2 * math.pi
+            self._player_ang_vel = 6 * ang_diff
 
-            # Update turtle angular velocity
-            ang_mult = self.get_parameter("angular_velocity_multiplier").value
-            ang_vel = self.get_parameter("default_angular_velocity").value
-            if cross == 0:
-                self._player_ang_vel = 0
-            elif cross > 0:
-                self._player_ang_vel = ang_vel
-            else:
-                self._player_ang_vel = -1 * ang_vel
+            # # Figure out which way we need to turn using the cross product
+            # dx = math.cos(self._player_theta)
+            # dy = math.sin(self._player_theta)
+            # vx = self._closest_turtle["x"] - self._player_x
+            # vy = self._closest_turtle["y"] - self._player_y
+            # cross = (dx * vy) - (dy * vx)
+            # if DEBUG:
+            #     self.get_logger().info(f"cross={cross:.2f}")
+
+            # # Get distance to target
+            # dist = math.sqrt(vx ** 2 + vy ** 2)
+            # if DEBUG:
+            #     self.get_logger().info(f"dist={dist:.2f}")
+
+            # # Update turtle linear velocity
+            # lin_vel_mult = self.get_parameter("lin_vel_multiplier").value
+            # lin_vel_min = self.get_parameter("lin_vel_min").value
+            # lin_vel_max = self.get_parameter("lin_vel_max").value
+            # lin_vel = abs(lin_vel_mult / max(cross, 0.1)) * dist
+            # self._player_lin_vel = min(max(lin_vel, lin_vel_min), lin_vel_max)
+            # if DEBUG:
+            #     self.get_logger().info(f"lin_vel={self._player_lin_vel:.2f}")
+
+            # # Update turtle angular velocity
+            # ang_vel_mult = self.get_parameter("ang_vel_multiplier").value
+            # ang_vel_min = self.get_parameter("ang_vel_min").value
+            # ang_vel_max = self.get_parameter("ang_vel_max").value
+            # self._player_ang_vel = \
+            #     min(max(ang_vel_mult * cross, ang_vel_min), ang_vel_max)
+            # if DEBUG:
+            #     self.get_logger().info(f"ang_vel={self._player_ang_vel:.2f}")
+            #     self.get_logger().info("---")
 
         # Construct message
         msg = Twist()

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import math
 import random
 import uuid
@@ -7,7 +8,12 @@ from hungry_turtle_interfaces.msg import TurtleArray, TurtleInfo
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
-from turtlesim.srv import Spawn
+from turtlesim.msg import Pose
+from turtlesim.srv import Kill, Spawn
+
+# Debug flag
+DEBUG = False
+SOUND = True
 
 class GameLogic(Node):
     """Node for spawning new turtles and handling collisions"""
@@ -19,10 +25,11 @@ class GameLogic(Node):
 
         # Set up parameters
         self.declare_parameter("seed", 42)
-        self.declare_parameter("spawn_period", 2.0)
+        self.declare_parameter("spawn_period", 1.0)
         self.declare_parameter("canvas_width", 11.088)
         self.declare_parameter("canvas_height", 11.088)
-        self.declare_parameter("max_spawns", 1)
+        self.declare_parameter("max_spawns", 10)
+        self.declare_parameter("collision_distance", 0.3)
 
         # Assign parameters
         random.seed(self.get_parameter("seed").value)
@@ -41,13 +48,22 @@ class GameLogic(Node):
             10,
         )
 
-        # Configure spawn client
+        # Configure clients
         self._spawn_client = self.create_client(Spawn, "/spawn")
+        self._kill_client = self.create_client(Kill, "/kill")
 
         # Configure periodic control updates
         self._timer = self.create_timer(
             self._timer_period, 
             self._spawn_turtle
+        )
+
+        # Initialize player position subscriber
+        self._player_sub = self.create_subscription(
+            Pose,
+            "/turtle1/pose",
+            self._game_logic_callback,
+            10,
         )
 
         # Log that node has started
@@ -113,6 +129,38 @@ class GameLogic(Node):
         # Print turtle name
         resp = future.result()
         self.get_logger().info("Spawn response: " + str(resp))
+
+    def _game_logic_callback(self, msg: Pose):
+        """On player position update, look for collisions"""
+
+        # Get player position
+        player_x = msg.x
+        player_y = msg.y
+
+        # Check for collisions
+        col_dist = self.get_parameter("collision_distance").value
+        for turtle in self._turtles:
+            dist = math.sqrt((player_x - turtle["x"]) ** 2 + \
+                (player_y - turtle["y"]) ** 2)
+            if DEBUG:
+                self.get_logger().info(
+                    f"Distance from {turtle["name"]}: {dist}"
+                )
+            
+            # Collision detected
+            if dist <= col_dist:
+                self.get_logger().info(f"Collision with {turtle['name']}")
+
+                # Send request to remove turtle
+                req = Kill.Request()
+                req.name = turtle["name"]
+                self._kill_client.call_async(req)
+
+                # Update turtles list
+                self._turtles[:] = [t for t in self._turtles if t["name"] != \
+                                    turtle["name"]]
+                
+                break
 
 def main():
     try:
