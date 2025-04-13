@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="turtlesim" exec="turtlesim_node" />
+    <node pkg="hungry_turtle_pkg" exec="turtle_control" />
+    <node pkg="hungry_turtle_pkg" exec="game_logic" />
+</launch>
