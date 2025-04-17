@@ -27,7 +27,12 @@ setup(
             "add_two_ints_server = my_py_pkg.add_two_ints_server:main",
             "add_two_ints_client_no_oop = my_py_pkg.add_two_ints_client_no_oop:main",
             "add_two_ints_client = my_py_pkg.add_two_ints_client:main",
-            "hw_status_publisher = my_py_pkg.hardware_status_publisher:main"
+            "hw_status_publisher = my_py_pkg.hardware_status_publisher:main",
+            "turtle1_tf_broadcaster.py = my_py_pkg.turtle1_tf_broadcaster:main",
+            "turtle2_tf_broadcaster.py = my_py_pkg.turtle2_tf_broadcaster:main",
+            "turtle2_tf_listener.py = my_py_pkg.turtle2_tf_listener:main",
+            "turtle_tf_broadcaster = my_py_pkg.turtle_tf_broadcaster:main",
+            "point_projector = my_py_pkg.point_projector:main"
         ],
     },
 )

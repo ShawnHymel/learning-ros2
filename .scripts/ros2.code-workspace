@@ -28,6 +28,7 @@
             "CMAKE_PREFIX_PATH": "/opt/ros/jazzy",
             "ament_cmake_DIR": "/opt/ros/jazzy/share/ament_cmake/cmake"
         },
+        "cmake.ignoreCMakeListsMissing": true,
         "workbench.colorTheme": "Visual Studio Dark - C++",
         "ros.distro": "jazzy",
         "ros.workspaceFolder": "/config/workspaces/ros2_ws",
