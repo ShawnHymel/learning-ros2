@@ -10,7 +10,7 @@ from std_srvs.srv import Trigger
 from turtlesim.srv import Spawn
 
 class SpawnerNode(Node):
-    """Spawns turtles and notifies when spawning is complete"""
+    """Spawns follower turtles and notifies when spawning is complete"""
 
     def __init__(self):
         """Constructor"""
@@ -20,7 +20,7 @@ class SpawnerNode(Node):
         self.declare_parameter('canvas_width', 11.088)
         self.declare_parameter('canvas_height', 11.088)
         self.declare_parameter('seed', 42)
-        self.declare_parameter('num_followers', 10)
+        self.declare_parameter('turtle_names', ['follower0'])
 
         # Set random seed
         random.seed(self.get_parameter('seed').value)
@@ -39,12 +39,12 @@ class SpawnerNode(Node):
         )
 
         # Spawn follower turtles in random locations
-        num_turtles = self.get_parameter('num_followers').value
-        for i in range(num_turtles):
+        turtle_names = self.get_parameter('turtle_names').value
+        for name in turtle_names:
             x = random.random() * self.get_parameter("canvas_width").value
             y = random.random() * self.get_parameter("canvas_height").value
             theta = random.random() * 2 * math.pi
-            self._spawn(f"follower{i}", x, y, theta)
+            self._spawn(f"{name}", x, y, theta)
 
         # Update spawn status flag
         self._spawn_complete = True

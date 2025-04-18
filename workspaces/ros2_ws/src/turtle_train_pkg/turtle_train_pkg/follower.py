@@ -22,12 +22,14 @@ class FollowerNode(Node):
         self.declare_parameter('debug', False)
         self.declare_parameter('turtle_name', rclpy.Parameter.Type.STRING)
         self.declare_parameter('leader_name', rclpy.Parameter.Type.STRING)
+        self.declare_parameter('follow_distance', 1.0)
         self.declare_parameter('follow_period', 0.2)
 
         # Assign attributes from parameters
         self._debug = self.get_parameter('debug').value
         self._turtle_name = self.get_parameter('turtle_name').value
         self._leader_name = self.get_parameter('leader_name').value
+        self._follow_distance = self.get_parameter('follow_distance').value
 
         # Create client and wait for spawn_status service (blocking)
         spawn_status_client = self.create_client(Trigger, 'spawn_status')
@@ -44,6 +46,9 @@ class FollowerNode(Node):
                     self.get_logger().info("Spawner says we're ready!")
                     break
             self.get_clock().sleep_for(rclpy.duration.Duration(seconds=2.0))
+
+        # Delay briefly to prevent missed transform broadcast messages
+        self.get_clock().sleep_for(rclpy.duration.Duration(seconds=2.0))
 
         # Set up transform buffer and listener
         self._tf_buffer = Buffer()
@@ -72,7 +77,7 @@ class FollowerNode(Node):
         leader_target = PointStamped()
         leader_target.header.frame_id = self._leader_name
         leader_target.header.stamp = rclpy.time.Time().to_msg()
-        leader_target.point.x = -1.0
+        leader_target.point.x = -1 * self._follow_distance
         leader_target.point.y = 0.0
         leader_target.point.z = 0.0
 

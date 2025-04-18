@@ -22,7 +22,7 @@ setup(
         'console_scripts': [
             "spawner = turtle_train_pkg.spawner:main",
             "follower = turtle_train_pkg.follower:main",
-            "pose_broadcaster = turtle_train_pkg.pose_broadcaster:main"
+            "pose_broadcaster = turtle_train_pkg.pose_broadcaster:main",
         ],
     },
 )
