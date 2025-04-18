@@ -20,6 +20,8 @@
         "terminal.integrated.env.linux": {
             "PYTHONPATH": "/opt/ros/jazzy/lib/python3.12/site-packages:$PYTHONPATH"
         },
+        "terminal.integrated.fontFamily": "Consolas",
+        "terminal.integrated.fontSize": 15,
         "cmake.environment": {
             "CMAKE_PREFIX_PATH": "/opt/ros/jazzy",
             "ament_cmake_DIR": "/opt/ros/jazzy/share/ament_cmake/cmake"
