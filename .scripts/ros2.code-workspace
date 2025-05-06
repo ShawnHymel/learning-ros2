@@ -1,8 +1,8 @@
 {
     "folders": [
         {
-            "name": "/config/workspaces/ros2_ws",
-            "path": "/config/workspaces/ros2_ws"
+            "name": "/config/workspace",
+            "path": "/config/workspace"
         },
         {
             "name": "/opt/ros/jazzy",
@@ -10,6 +10,15 @@
         },
     ],
     "settings": {
+        "editor.rulers": [80,120],
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "[c]": {
+            "editor.tabSize": 2,
+        },
+        "[cpp]": {
+            "editor.tabSize": 2,
+        },
         "terminal.integrated.defaultProfile.linux": "bash",
         "terminal.integrated.profiles.linux": {
             "bash": {
@@ -33,7 +42,7 @@
         "cmake.ignoreCMakeListsMissing": true,
         "workbench.colorTheme": "Visual Studio Dark - C++",
         "ros.distro": "jazzy",
-        "ros.workspaceFolder": "/config/workspaces/ros2_ws",
+        "ros.workspaceFolder": "/config/workspace",
         "files.associations": {
             "*.ipp": "cpp",
             "array": "cpp",
